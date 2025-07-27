@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cloud Run Frontend</title>
+</head>
+
+<body>
+    <h2>Send request to a URL:</h2>
+    <form action="/send_request" method="post" style="line-height: 2;">
+        <label for="url" >Backend URL:</label>
+        <input type="text" id="url" name="url" size="50" placeholder="https://cr-prj.us-central1.run.app/userinfo" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    <!--
+    <div>
+        <p>
+            [1]: By default <a href="https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application">ADC (Application Default Credentials) </a> and <a href="https://cloud.google.com/run/docs/authenticating/service-to-service#acquire-token"> id token</a> will be used to fetch the token. 
+        <p>
+    </div>
+    -->
+</body>
