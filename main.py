@@ -19,17 +19,30 @@ def send_request():
     host_info = socket.getaddrinfo(host=host, 
                                    port=port)
     lines = []
-    
     lines.append(f"DNS lookup for {host}: " + repr([info[4][0] for info in host_info]))
     print(lines[-1])
+
+    idtoken = get_idtoken(parsed_url.geturl())
+    print(f"ID Token: {idtoken}")
+    headers = {
+        'Authorization': f'Bearer {idtoken}',
+    }
     resp = requests.get(parsed_url.geturl(),
-                 timeout=5)
+                 timeout=5,
+                 headers=headers)
     lines.append("---- response from backend ----")
     lines.append(f"Status Code: {resp.status_code}")
     lines.append(f"Response Headers: {resp.headers}")
     lines.append(f"Response Text: {resp.text}...")
     lines.append("---- end of response ----")
-    return jsonify({'lines': lines})
+    return jsonify(lines)
+
+def get_idtoken(audience):
+    token_url = f'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity?audience={audience}'
+    headers = {'Metadata-Flavor': 'Google'}
+    response = requests.get(token_url, headers=headers)
+    print(f'Fetching ID token for {audience}')
+    return response.text
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', 8080))
